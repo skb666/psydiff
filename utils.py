@@ -1,6 +1,6 @@
-#-------------------------------------------------------------
+# -------------------------------------------------------------
 #            tests and operations on AST nodes
-#-------------------------------------------------------------
+# -------------------------------------------------------------
 import os
 import sys
 import re
@@ -19,7 +19,6 @@ def node_fields(node):
     return ret
 
 
-
 # get full source text where the node is from
 def node_source(node):
     if hasattr(node, 'node_source'):
@@ -28,11 +27,9 @@ def node_source(node):
         return None
 
 
-
 # utility for getting exact source code part of the node
 def src(node):
-    return node.node_source[node.node_start : node.node_end]
-
+    return node.node_source[node.node_start: node.node_end]
 
 
 def node_start(node):
@@ -40,7 +37,6 @@ def node_start(node):
         return node.node_start
     else:
         return 0
-
 
 
 def node_end(node):
@@ -54,17 +50,14 @@ def is_atom(x):
     return type(x) in [int, str, bool, float]
 
 
-
 def is_def(node):
     return isinstance(node, FunctionDef) or isinstance(node, ClassDef)
-
 
 
 # whether a node is a "frame" which can contain others and be
 # labeled
 def is_frame(node):
     return type(node) in [ClassDef, FunctionDef, Import, ImportFrom]
-
 
 
 def is_empty_container(node):
@@ -109,7 +102,6 @@ def node_framed(node, changes):
     return False
 
 
-
 # helper for turning nested if statements into sequences,
 # otherwise we will be trapped in the nested structure and find
 # too many differences
@@ -147,7 +139,7 @@ def node_name(node):
 def attr_to_str(node):
     if isinstance(node, Attribute):
         vName = attr_to_str(node.value)
-        if vName != None:
+        if vName is not None:
             return vName + "." + node.attr
         else:
             return None
@@ -157,7 +149,7 @@ def attr_to_str(node):
         return None
 
 
-### utility for counting size of terms
+# utility for counting size of terms
 def node_size(node, test=False):
 
     if not test and hasattr(node, 'node_size'):
@@ -196,10 +188,9 @@ def node_size(node, test=False):
     return ret
 
 
-
-#-------------------------------------------------------------
+# -------------------------------------------------------------
 # utilities
-#-------------------------------------------------------------
+# -------------------------------------------------------------
 def debug(*args):
     if DEBUG:
         print(args)
@@ -221,7 +212,7 @@ def div(m, n):
     if n == 0:
         return m
     else:
-        return m/float(n)
+        return m / float(n)
 
 
 # for debugging
@@ -266,9 +257,7 @@ def pf():
     cProfile.run("run('heavy')", sort="cumulative")
 
 
-
-
-#------------------------ file system support -----------------------
+# ------------------------ file system support -----------------------
 
 def base_name(filename):
     try:
@@ -283,9 +272,9 @@ def base_name(filename):
     return filename[start:end]
 
 
-## file system support
+# file system support
 def parse_file(filename):
-    f = open(filename, 'r');
+    f = open(filename, 'r')
     lines = f.read()
     ast = parse(lines)
     improve_ast(ast, lines, filename, 'left')
@@ -300,4 +289,3 @@ def get_install_path():
 
 def lfilter(f, ls):
     return list(filter(f, ls))
-
